@@ -1,0 +1,31 @@
+  .sideBox{
+    width: 600px;
+  }
+.card{
+    background:red;
+  width: 130px;
+height: 160px;
+float: left;
+margin: 10px;
+position: relative;
+  }
+    .card:after{
+     background: blue;
+        width: 130px;
+        height: 160px;
+        content: "";
+        display: block;
+    }
+  .ranks{
+   position:absolute;
+  left: 35%;
+  top: 30%;
+        font-size: 44pt;
+  }
+    .suits{
+        position:absolute;
+        left: 20px;
+        top: 20px;
+        font-size: 18pt;
+    }
+

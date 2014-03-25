@@ -1,0 +1,15 @@
+<div id="ok"></div>
+<canvas id="c"></canvas>
+<audio controls id="audio" style="display: none">
+    <source src="flip.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+<script>
+    var b = document.getElementById('ok');
+    var c = document.getElementsByTagName('canvas')[0];
+    var a = c.getContext('2d');
+    var won = "{{=URL('static', 'sound/won.mp3')}}";
+    var flip = "{{=URL('static', 'sound/flip.mp3')}}";
+    document.body.clientWidth; // fix bug in webkit: http://qfox.nl/weblog/218
+</script>
+<script src="{{=URL('static','js/memory.js')}}"></script>

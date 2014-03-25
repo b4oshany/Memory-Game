@@ -1,0 +1,19 @@
+CACHE MANIFEST
+
+CACHE:
+
+# html files
+index.html
+
+# js files
+static/memory.js
+
+# css files
+static/memory.css
+
+# sound files
+static/sound/flip.mp3
+
+# image files
+http://jbrown72.files.wordpress.com/2010/12/yugioh-card-back.jpg
+

@@ -1,0 +1,17 @@
+<html manifest="manifest.appcache">
+<body>
+<div id="ok"></div>
+<canvas id="c"></canvas>
+<audio controls id="audio" style="display: none">
+    <source src="/static/sound/flip.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+</audio>
+<script>
+    var b = document.getElementById('ok');
+    var c = document.getElementsByTagName('canvas')[0];
+    var a = c.getContext('2d');
+    document.body.clientWidth; // fix bug in webkit: http://qfox.nl/weblog/218
+</script>
+<script src="{{ url_for('static', filename='memory.js') }}"></script>
+</body>
+</html>
