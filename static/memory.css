@@ -29,3 +29,21 @@ position: relative;
         font-size: 18pt;
     }
 
+#c{
+float: left;
+}
+#cardholder{
+float: left;
+}
+#gamer{
+    float: right;
+    width: 200px;
+    text-align: center;
+}
+
+#gamer_photo{
+    width: 100%;
+    }
+
+
+

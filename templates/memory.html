@@ -1,13 +1,21 @@
 <html manifest="manifest.appcache">
 <body>
-<div id="ok"></div>
+<div id="cardholder"></div>
 <canvas id="c"></canvas>
+<div id="gamer">
+<p id="profilename">Click me, to set your name</p>
+<img src="{{ url_for('static', filename='148871.jpg') }}" id="gamer_photo" />
+<p>Number of turns leave: <span id="turns"></span></p>
+<type input="button" id="savegame" value="Save Game" />
+</div>
 <audio controls id="audio" style="display: none">
     <source src="/static/sound/flip.mp3" type="audio/mp3">
     Your browser does not support the audio element.
 </audio>
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='memory.css') }}" />
 <script>
-    var b = document.getElementById('ok');
+    var b = document.getElementById('cardholder');
     var c = document.getElementsByTagName('canvas')[0];
     var a = c.getContext('2d');
     document.body.clientWidth; // fix bug in webkit: http://qfox.nl/weblog/218
