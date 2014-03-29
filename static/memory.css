@@ -1,3 +1,14 @@
+body{
+background: rgba(26, 138, 50, 0.9);
+}
+.w, #gamers div{
+    cursor: pointer;
+}
+
+.w > div{
+    border-radius: 5;
+}
+
   .sideBox{
     width: 600px;
   }
@@ -35,27 +46,73 @@ float: left;
 #cardholder{
 float: left;
 }
-#gamer{
+#gamers{
     float: right;
     width: 200px;
     text-align: center;
+  color: white;
+  font-weight: bold;
 }
 
-#gamer_photo{
+#gamers > div {
+background: rgba(0,0,0, 0.9);
+padding: 5px;
+border-radius: 10px;
+}
+
+#gamer{
+    display: none;
+    }
+
+#gamer_photo, #apponent_photo{
     width: 100%;
     }
 
-#pic{
+#pic,  #apponent_pic{
     position: relative;
 }
 
-#note{
+#note, #apponent_note{
   top: 0;
   background: rgba(0, 0, 0, 0.8); 
   padding: 5px;
-  color: white;
-  font-weight: bold;
 } 
+
+#wrapperholder {
+height: 500px;
+position: absolute;
+z-index: 10000;
+background: rgba(0,0,0,0.9);
+width: 100%;
+margin: -8px;
+}
+
+#wrapper {
+position: absolute;
+top: 50%;
+left: 50%;
+}
+
+#playoptions {
+position: absolute;
+left: -250px;
+top: 50%;
+width: 500px;
+text-align: center;
+}
+
+#playoptions .play_option {
+border: none;
+padding: 10px;
+background: blue;
+color: white;
+font-weight: bold;
+font-size: large;
+}
+
+#playoptions .play_option:hover {
+background: black;
+}
 
 
 
