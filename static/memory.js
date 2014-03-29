@@ -155,10 +155,10 @@ function F(t) {
             if(skip) skip = false 
             else if(mode == 1) turn++, userdata.points = parseInt(userdata.points) - 1;
             else if(mode == 2) 
-                if(turn == apponent_turn) turn++, userdata.points = parseInt(userdata.points) - 1
+                if(turn == apponent_turn) turn++, userdata.points = parseInt(userdata.points) - 1;
                 else apponent_turn++, apponentdata.points = parseInt(apponentdata.points) - 1;
-        userdata.turn = turn, saveData(userdata), document.querySelector("#turns").innerHTML = (mode == 1)? 24 - turn : 12 - turn; 
-        if(mode == 2) apponentdata.turn = apponent_turn, saveApponentData(apponentdata), document.querySelector("#apponent_turns").innerHTML = 12 - apponent_turn;
+        userdata.turn = turn, saveData(userdata), document.querySelector("#turns").innerHTML = turn; 
+        if(mode == 2) apponentdata.turn = apponent_turn, saveApponentData(apponentdata), document.querySelector("#apponent_turns").innerHTML = apponent_turn;
     }
     document.querySelector("#profilepoints").innerHTML = userdata.points;
     if(mode == 2) document.querySelector("#apponentpoints").innerHTML = apponentdata.points;
