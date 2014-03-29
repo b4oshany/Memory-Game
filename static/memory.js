@@ -52,7 +52,7 @@ function twoPlayerMode(){
             var photo = prompt("Enter url for profile image");
             apponentdata.photo = photo;
             saveApponentData(apponentdata);
-            if(photo != null) this.setAttribute("src", photo);
+            if(photo != null) document.querySelector("#apponent_photo").setAttribute("src", photo);
         }    
     }
 }
@@ -188,19 +188,19 @@ function setGameMode(play_mode){
     loadGameData();
     document.querySelector("#gamer").style.display = "block";
     if(mode == 2) twoPlayerMode();
-}
+    
+    document.querySelector("#profilename").onclick=function(){
+        var usr = prompt("Please enter your username");
+        userdata.username = usr;
+        saveData(userdata);
+        if(usr != null) this.innerHTML = "Hi, "+usr;
+    }
 
-username.onclick=function(){
-    var usr = prompt("Please enter your username");
-    userdata.username = usr;
-    saveData(userdata);
-    if(usr != null) this.innerHTML = "Hi, "+usr;
-}
-
-userpic.onclick=function(){
-    var photo = prompt("Enter url for profile image");
-    userdata.photo = photo;
-    saveData(userdata);
-    if(photo != null) this.setAttribute("src", photo);
+    document.querySelector("#pic").onclick=function(){
+        var photo = prompt("Enter url for profile image");
+        userdata.photo = photo;
+        saveData(userdata);
+        if(photo != null) document.querySelector("#gamer_photo").setAttribute("src", photo);
+    }
 }
 // end of submission //
