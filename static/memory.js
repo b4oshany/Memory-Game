@@ -113,6 +113,7 @@ function S(y){
     }else{        
         audioElement.setAttribute("src", "/static/sound/won.mp3");
         audioElement.play();
+        return true;
     }
 }
 
@@ -126,15 +127,23 @@ document.querySelector("head").innerHTML = "<style>.w{" + W + "position: relativ
 
 var clicks = 0;
 function RS(){ 
+    S(false)
+    var whowon = (mode == 1)? "You are smart!" : (userdata.points > apponentdata.points)? userdata.username+" won!" : (userdata.points < apponentdata.points)? apponentdata.username+" won!" : "Sadly, its a draw"; 
+    if(supportStorage) localStorage.clear(); 
+    turn = 0;
+    setTimeout(function(){
+    alert(whowon);
 	var con = confirm("Do you want to start a new game?");
-	if(con){b.innerHTML = ""; D(); turn = 1; clicks = 0;}
+	if(con){b.innerHTML = ""; D(); turn = 0; clicks = 0;}
+	}, 1000);
+	
 }
 
 function F(t) {
-    if(t.className.indexOf("p")){
+    if(t.className.indexOf("p") == -1){
 	clicks++;
 	skip = false;
-	if(turn == ((mode == 1)? 24 : 12)){ RS(); return};
+	if(turn == 24){ RS(); return};
     v = b.querySelectorAll(".v");
     x = v[0];
     y = v[1];
@@ -154,7 +163,7 @@ function F(t) {
     document.querySelector("#profilepoints").innerHTML = userdata.points;
     if(mode == 2) document.querySelector("#apponentpoints").innerHTML = apponentdata.points;
     S(true);
-    if (!l) S(false), whowon = (mode == 1)? "You are smart!" : (userdata.points > apponentdata.points)? userdata.name+" won!" : (userdata.points < apponentdata.points)? apponentdata.name+" won!" : "Sadly, its a draw"; if(supportStorage) localStorage.clear(); setTimeout( function(){alert(whowon); location.reload(); }, 2000)
+    if (!l) RS();
     saveGameData(b.innerHTML);
     }
 }
