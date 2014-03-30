@@ -96,8 +96,7 @@ function startSession(){
         else
             apponentdata = JSON.parse(localStorage.apponent);
     }
-    if(localStorage.gamedata == undefined)
-        alert("This is a memory game. For each correct answer you get 3 points, while for each wrong answer 1 point will be deducted from your score. \n\r Note. the game will automatically save your progress");     
+     alert("This is a memory game. For each correct answer you get 3 points, while for each wrong answer 1 point will be deducted from your score. \n\r Note. the game will automatically save your progress");     
     }
     if(userdata.username != null) username.innerHTML = userdata.username;
     if(userdata.photo != null) userpic.setAttribute("src", userdata.photo);   
@@ -149,7 +148,7 @@ var hide = ".c.b { -webkit-transform-style: preserve- 3 d;  -webkit-backface-vis
 +".c.f {position: absolute; top: 0; left: 0; z-index: 800; -webkit-transform: rotatey(-180deg); -webkit-transform-style: preserve- 3 d; -webkit-backface-visibility: hidden;"
  +"-webkit-transition: all ease-in-out 0.4s;opacity: 0;}";
 
-document.querySelector("head").innerHTML = "<style>.w{" + W + "position: relative; "+P("perspective: 700")+"border:1px solid #777;text-align:center;margin:5px;float:left" + "; }.v .b,.p .b{" + P("transform:scale(0)") + "}.c{" + W + A + "font-size:80px}b{" + A + "font-size:24px;left:5px}.b,.r{color:red}.b{background: black url(http://jbrown72.files.wordpress.com/2010/12/yugioh-card-back.jpg) no-repeat; background-size: cover; " + P("transition:1s") +"} .txt{position: absolute; top: 30%; ;left: 10%;} "+hide+show+"</style>";
+document.querySelector("head").innerHTML = "<style>.w{" + W + "position: relative; "+P("perspective: 700")+"border:1px solid #777;text-align:center;margin:5px;float:left" + "; }.v .b,.p .b{" + P("transform:scale(0)") + "}.c{" + W + A + "font-size:80px}b{" + A + "font-size:24px;left:5px}.b,.r{color:red}.b{background: black url(static/yugioh-card-back.jpg) no-repeat; background-size: cover; " + P("transition:1s") +"} .txt{position: absolute; top: 30%; ;left: 10%;} "+hide+show+"</style>";
 
 var clicks = 0;
 function RS(){ 
