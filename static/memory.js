@@ -7,6 +7,7 @@ var userturn = document.querySelector("#turns");
 var userpic = document.querySelector("#gamer_photo");
 var holder = document.querySelector("#wrapperholder");
 var mode = 1;
+var user_turn = 0;
 var supportStorage = false;
 var userdata = {"username": "Player 1", "turn": 0, "photo": null, "points": 0};
 var apponentdata = {"username": "Player 2", "turn":0, "photo":null, "points": 0};
@@ -17,31 +18,20 @@ holder.style.height = window.innerHeight+"px";
 
 if(typeof(Storage) !== undefined){
     supportStorage = true;
-    if(localStorage.gamer === undefined) saveData(userdata);
-    else{
-        userdata = JSON.parse(localStorage.gamer); 
-        if(userdata.username != null) username.innerHTML = "Hi, "+userdata.username;
-        if(userdata.photo != null) userpic.setAttribute("src", userdata.photo);        
-    }
-    mode = (localStorage.mode == undefined)? 1 : parseInt(localStorage.mode);             
-    if(mode == 2){
-        if(localStorage.apponent == undefined)
-            saveApponentData(apponentdata)
-        else
-            apponentdata = JSON.parse(localStorage.apponent);
-        userturn.innerHTML = 12;     
-    }
-    if(localStorage.gamedata == undefined)
-        alert("This is a memory game. For each correct answer you get 3 points, while for each wrong answer 1 point will be deducted from your score. \n\r Note. the game will automatically save your progress"); 
+}
+
+function getUserMode(mode){
+    return (mode == 1)? localStorage.gamer : localStorage.gamern;
 }
 
 function twoPlayerMode(){    
     if(mode == 2) {
-        apponent_turn = (supportStorage && !isNaN(apponentdata.turn))? parseInt(apponentdata.turn): 0;  
+        apponent_turn = apponentdata.turn;         
         if(apponentdata.username != null) document.querySelector("#apponent_profilename").innerHTML = "Hi, "+apponentdata.username;
         if(apponentdata.photo != null) document.querySelector("#apponent_pic").setAttribute("src", apponentdata.photo);   
         apponturn = document.querySelector("#apponent_turns");
-        apponturn.innerHTML = 12 - apponent_turn; 
+        apponturn.innerHTML = apponent_turn; 
+        document.querySelector("#apponentpoints").innerHTML = apponentdata.points;
         document.querySelector("#apponent_profilename").onclick=function(){
             var usr = prompt("Please enter your username");
             apponentdata.username = usr;
@@ -59,7 +49,7 @@ function twoPlayerMode(){
 
 function saveData(userdata){
     if(supportStorage)
-        localStorage.gamer = JSON.stringify(userdata)
+        (mode == 1)? localStorage.gamer = JSON.stringify(userdata): localStorage.gamern = JSON.stringify(userdata);
 }
 
 function saveApponentData(apponentData){
@@ -69,14 +59,17 @@ function saveApponentData(apponentData){
 
 function saveGameData(data, matches){
     if(supportStorage)
-        localStorage.gamedata = data, localStorage.matchesleft = matches;
+        if(mode == 1) localStorage.single_gamedata = data, localStorage.single_matchesleft = matches;
+        else if(mode == 2) localStorage.vs_gamedata = data, localStorage.vs_matchesleft = matches;
 }
 
 function loadGameData(){
     l = 8;
-    if(supportStorage && localStorage.gamedata !== undefined){ 
-        b.innerHTML = localStorage.gamedata;
-        if(localStorage.matchesleft !== undefined) l = parseInt(localStorage.matchesleft);}
+    var gamedata = (mode == 1)? localStorage.single_gamedata : localStorage.vs_gamedata;
+    var matchesleft = (mode == 1)? localStorage.single_matchesleft : localStorage.vs_matchesleft;
+    if(supportStorage && gamedata !== undefined){ 
+        b.innerHTML = gamedata;
+        if(matchesleft !== undefined) l = parseInt(matchesleft);}
     else D();
 }
 
@@ -84,12 +77,34 @@ window.onload = function(){
     opholder = document.querySelector("#playoptions");
     opholder.style.top = "-"+(opholder.clientHeight/2)+"px"; 
     opholder.style.left = "-"+(opholder.clientWidth/2)+"px";
+}
+
+function startSession(){
+    if(supportStorage){
+    mode = (localStorage.mode == undefined)? 1 : parseInt(localStorage.mode); 
+    if(getUserMode(mode) === undefined) saveData(userdata);
+    else{
+        userdata = JSON.parse(getUserMode(mode)); 
+        if(userdata.username != null) username.innerHTML = "Hi, "+userdata.username;
+        if(userdata.photo != null) userpic.setAttribute("src", userdata.photo);  
+        user_turn = (supportStorage && !isNaN(userdata.turn))? parseInt(userdata.turn): 0;      
+        document.querySelector("#profilepoints").innerHTML = userdata.points;
+    }            
+    if(mode == 2){
+        if(localStorage.apponent == undefined)
+            saveApponentData(apponentdata)
+        else
+            apponentdata = JSON.parse(localStorage.apponent);
+    }
+    if(localStorage.gamedata == undefined)
+        alert("This is a memory game. For each correct answer you get 3 points, while for each wrong answer 1 point will be deducted from your score. \n\r Note. the game will automatically save your progress");     
+    }
     if(userdata.username != null) username.innerHTML = userdata.username;
     if(userdata.photo != null) userpic.setAttribute("src", userdata.photo);   
-    saveData(userdata);
-    turn = (supportStorage && !isNaN(userdata.turn))? parseInt(userdata.turn): 0;
-    userturn.innerHTML = (mode == 1)? 24 - turn : 12 - turn;
+    saveData(userdata);    
+    userturn.innerHTML = user_turn;
 }
+
 
 function restart(){
         userdata.turn = 0;
@@ -97,14 +112,12 @@ function restart(){
         if(mode == 2) {
             apponentdata.turn = 0;
             apponentdata.points = 0;
-            }
-        if(supportStorage){ 
-            localStorage.removeItem("matchesleft");
-            localStorage.removeItem("gamedata"); 
-            saveData(userdata); 
-            if(mode == 2) saveApponentData(apponentdata);
-        }
-        location.reload()
+         }
+        saveData(userdata);
+        if(supportStorage)    
+            if(mode == 1) localStorage.removeItem("single_matchesleft"), localStorage.removeItem("single_gamedata");
+            else if(mode == 2) localStorage.removeItem("vs_matchesleft"), localStorage.removeItem("vs_gamedata"), saveApponentData(apponentdata);
+        location.reload();
 }
 
 function C(e, c) {
@@ -141,8 +154,7 @@ document.querySelector("head").innerHTML = "<style>.w{" + W + "position: relativ
 var clicks = 0;
 function RS(){ 
     S(false)
-    var whowon = (mode == 1)? "You are smart!" : (userdata.points > apponentdata.points)? userdata.username+" won!" : (userdata.points < apponentdata.points)? apponentdata.username+" won!" : "Sadly, its a draw"; 
-    turn = 0;    
+    var whowon = (mode == 1)? "You are smart!" : (userdata.points > apponentdata.points)? userdata.username+" won!" : (userdata.points < apponentdata.points)? apponentdata.username+" won!" : "Sadly, its a draw";
     setTimeout(function(){
     alert(whowon);
     restart();
@@ -154,28 +166,26 @@ function F(t) {
     if(t.className.indexOf("p") == -1){
 	clicks++;
 	skip = false;
-	if(turn == 24){ RS(); return};
     v = b.querySelectorAll(".v");
     x = v[0];
     y = v[1];
     if (y) C(x, ""), C(y, "");
-    if (x && !y && x != t && x.innerHTML == t.innerHTML) C(x, "p"), C(t, "p"), l--, (mode == 1)? userdata.points += 3 : (turn == apponent_turn)? userdata.points += 3: apponentdata.points += 3, skip = true;
+    if (x && !y && x != t && x.innerHTML == t.innerHTML) C(x, "p"), C(t, "p"), l--, (mode == 1)? userdata.points += 3 : (user_turn == apponent_turn)? userdata.points += 3: apponentdata.points += 3, skip = true;
     else{ 
         C(t, "v"); 
         if (clicks%2==0 && x != t) 
             if(skip) skip = false 
-            else if(mode == 1) turn++, userdata.points = parseInt(userdata.points) - 1;
+            else if(mode == 1) user_turn++, userdata.points = parseInt(userdata.points) - 1;
             else if(mode == 2) 
-                if(turn == apponent_turn) turn++, userdata.points = parseInt(userdata.points) - 1;
+                if(user_turn == apponent_turn) user_turn++, userdata.points = parseInt(userdata.points) - 1;
                 else apponent_turn++, apponentdata.points = parseInt(apponentdata.points) - 1;
-        userdata.turn = turn, saveData(userdata), document.querySelector("#turns").innerHTML = turn; 
+        userdata.turn = user_turn; saveData(userdata); document.querySelector("#turns").innerHTML = user_turn; 
         if(mode == 2) apponentdata.turn = apponent_turn, saveApponentData(apponentdata), document.querySelector("#apponent_turns").innerHTML = apponent_turn;
     }
     document.querySelector("#profilepoints").innerHTML = userdata.points;
     if(mode == 2) document.querySelector("#apponentpoints").innerHTML = apponentdata.points;
     S(true);
     if (!l) RS();
-    console.log(l);
     saveGameData(b.innerHTML, l);
     }
 }
@@ -194,13 +204,13 @@ function D(){
 
 function setGameMode(play_mode){
     mode = (play_mode == 'single')? 1 : (play_mode == 'two')? 2 : 1;    
-    if(mode == 2) document.querySelector("#gamers").innerHTML += "<p id='vs'>VS</p><div id='apponent'><p><span id='apponent_profilename'>Player 2</span> (edit)</p><p>Your points, <span id='apponentpoints'>0</span></p><div id='apponent_pic'><img src='static/148871.jpg' id='apponent_photo' /><p id='note'>Click to change profile pic</p><p>Number of turns leave: <span id='apponent_turns'>0</span></p></div>";
+    if(mode == 2) document.querySelector("#gamers").innerHTML += "<p id='vs'>VS</p><div id='apponent'><p><span id='apponent_profilename'>Player 2</span> (edit)</p><p>Your points, <span id='apponentpoints'>0</span></p><div id='apponent_pic'><img src='static/148871.jpg' id='apponent_photo' /><p id='note'>Click to change profile pic</p><p>Number of turns: <span id='apponent_turns'>0</span></p></div>";
     if(supportStorage) localStorage.mode = mode;   
     document.body.removeChild(holder);    
     loadGameData();
     document.querySelector("#gamer").style.display = "block";
-    if(mode == 2) twoPlayerMode();
-    
+    startSession();
+    if(mode == 2) twoPlayerMode();    
     document.querySelector("#profilename").onclick=function(){
         var usr = prompt("Please enter your username");
         userdata.username = usr;
