@@ -67,14 +67,16 @@ function saveApponentData(apponentData){
         localStorage.apponent = JSON.stringify(apponentData)
 }
 
-function saveGameData(data){
+function saveGameData(data, matches){
     if(supportStorage)
-        localStorage.gamedata = data
+        localStorage.gamedata = data, localStorage.matchesleft = matches;
 }
 
 function loadGameData(){
     l = 8;
-    if(supportStorage && localStorage.gamedata != undefined) b.innerHTML = localStorage.gamedata;
+    if(supportStorage && localStorage.gamedata !== undefined){ 
+        b.innerHTML = localStorage.gamedata;
+        if(localStorage.matchesleft !== undefined) l = parseInt(localStorage.matchesleft);}
     else D();
 }
 
@@ -90,7 +92,18 @@ window.onload = function(){
 }
 
 function restart(){
-        if(supportStorage) localStorage.clear();
+        userdata.turn = 0;
+        userdata.points = 0;
+        if(mode == 2) {
+            apponentdata.turn = 0;
+            apponentdata.points = 0;
+            }
+        if(supportStorage){ 
+            localStorage.removeItem("matchesleft");
+            localStorage.removeItem("gamedata"); 
+            saveData(userdata); 
+            if(mode == 2) saveApponentData(apponentdata);
+        }
         location.reload()
 }
 
@@ -129,12 +142,10 @@ var clicks = 0;
 function RS(){ 
     S(false)
     var whowon = (mode == 1)? "You are smart!" : (userdata.points > apponentdata.points)? userdata.username+" won!" : (userdata.points < apponentdata.points)? apponentdata.username+" won!" : "Sadly, its a draw"; 
-    if(supportStorage) localStorage.clear(); 
-    turn = 0;
+    turn = 0;    
     setTimeout(function(){
     alert(whowon);
-	var con = confirm("Do you want to start a new game?");
-	if(con){b.innerHTML = ""; D(); turn = 0; clicks = 0;}
+    restart();
 	}, 1000);
 	
 }
@@ -164,7 +175,8 @@ function F(t) {
     if(mode == 2) document.querySelector("#apponentpoints").innerHTML = apponentdata.points;
     S(true);
     if (!l) RS();
-    saveGameData(b.innerHTML);
+    console.log(l);
+    saveGameData(b.innerHTML, l);
     }
 }
 function D(){
