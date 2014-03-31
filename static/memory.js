@@ -175,9 +175,12 @@ function F(t) {
         if (clicks%2==0 && x != t) 
             if(skip) skip = false 
             else if(mode == 1) user_turn++, userdata.points = parseInt(userdata.points) - 1;
-            else if(mode == 2) 
-                if(user_turn == apponent_turn) user_turn++, userdata.points = parseInt(userdata.points) - 1;
-                else apponent_turn++, apponentdata.points = parseInt(apponentdata.points) - 1;
+            else if(mode == 2) {                
+                var apponent = document.querySelector("#apponent")
+                var gamer = document.querySelector("#gamer");
+                if(user_turn == apponent_turn) user_turn++, userdata.points = parseInt(userdata.points) - 1, gamer.setAttribute("turn", "inactive"), apponent.setAttribute("turn", "active");
+                else apponent_turn++, apponentdata.points = parseInt(apponentdata.points) - 1, gamer.setAttribute("turn", "active"), apponent.setAttribute("turn", "inactive");
+                }
         userdata.turn = user_turn; saveData(userdata); document.querySelector("#turns").innerHTML = user_turn; 
         if(mode == 2) apponentdata.turn = apponent_turn, saveApponentData(apponentdata), document.querySelector("#apponent_turns").innerHTML = apponent_turn;
     }

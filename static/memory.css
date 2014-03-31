@@ -7,38 +7,12 @@ background: rgba(26, 138, 50, 0.9);
 
 .w > div{
     border-radius: 5;
+box-shadow: 0 0 5px black;
 }
 
   .sideBox{
     width: 600px;
   }
-.card{
-    background:red;
-  width: 130px;
-height: 160px;
-float: left;
-margin: 10px;
-position: relative;
-  }
-    .card:after{
-     background: blue;
-        width: 130px;
-        height: 160px;
-        content: "";
-        display: block;
-    }
-  .ranks{
-   position:absolute;
-  left: 35%;
-  top: 30%;
-        font-size: 44pt;
-  }
-    .suits{
-        position:absolute;
-        left: 20px;
-        top: 20px;
-        font-size: 18pt;
-    }
 
 #c{
 float: left;
@@ -58,6 +32,7 @@ float: left;
 background: rgba(0,0,0, 0.9);
 padding: 5px;
 border-radius: 10px;
+box-shadow: 0 0 5px black;
 }
 
 #gamer{
@@ -112,6 +87,14 @@ font-size: large;
 
 #playoptions .play_option:hover {
 background: black;
+}
+
+[turn="active"]{
+    background: green !important;
+}
+
+[turn="inactive"]{
+    background: rgba(0,0,0,0.9) !important;
 }
 
 
